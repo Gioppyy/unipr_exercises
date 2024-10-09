@@ -1,0 +1,1 @@
+print("\n".join(f"Carattere n.{i} : {chr(i)}" for i in range(32, 126)))
