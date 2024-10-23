@@ -1,6 +1,7 @@
 import math
 
 sq = lambda delta : math.sqrt(delta)
+solve = lambda b, sqrt, a : (-b + sqrt) / (2*a)
 
 def solve_quadratic(a, b, c):
     d = b**2 - 4 * a * c
@@ -8,9 +9,7 @@ def solve_quadratic(a, b, c):
     if d < 0:
         raise ValueError
 
-    def solution(b, sqrt, a):
-        return (-b + sqrt) / (2*a)
-    return solution(b, sq(d), a), solution(b, -sq(d), a)
+    return solve(b, sq(d), a), solve(b, -sq(d), a)
 
 def main():
     while ((a := input("Inserisci il valore di A (ENTER per uscire): ")) != ""):
