@@ -1,6 +1,18 @@
+from g2d import Point
+from actor import Actor, Arena
+from random import choice, randrange, uniform
+from math import cos, pi, sin
+
 class Ghost(Actor):
-    def __init__(self, pos):
-        self._x, self._y = pos
+    def __init__(self):
+        a = uniform(0, 2 * pi)
+
+        x = 350 * cos(a)
+        y = 350 * sin(a)
+
+        self._x, self._y = (x, y)
+        self._start_x, self._start_y = (x, y)
+
         self._w, self._h = 20, 20
         self._visible = True
 
@@ -11,10 +23,9 @@ class Ghost(Actor):
         self._x = (self._x + dx) % aw
         self._y = (self._y + dy) % ah
 
-        if randrange(100) == 0:
-            self._visible = not self._visible
-        if randrange(1000) == 0:
-            arena.spawn(Ball(self.pos()))
+        keys = arena.current_keys()
+        if "h" in keys:
+            self._x, self._y = self._start_x, self._start_y
 
     def pos(self) -> Point:
         return self._x, self._y
@@ -26,3 +37,4 @@ class Ghost(Actor):
         if self._visible:
             return 20, 0
         return 20, 20
+
