@@ -1,14 +1,31 @@
-from actor import Actor, Arena, Point
+from actor import Arena
 from actors.arthur import Arthur
 from actors.zombie import Zombie
+from actors.gravestone import Gravestone
 from random import randint
 
 BG_WIDTH, BG_HEIGHT = 3588, 250
 
+def show_result(winner):
+    global written
+
+    if winner == "Monster":
+        g2d.draw_image("./imgs/lose.png", (0, 0))
+    else:
+        g2d.draw_image("./imgs/win.png", (0, 0))
+
+
 def tick():
     global x_view, y_view
+
     g2d.clear_canvas()
+    g2d.set_color((0,0,0))
     g2d.draw_image("./imgs/background.png", (0, 0), (x_view, y_view), (w_view, h_view))
+
+    finished, winner = arena.get_status()
+    if not finished:
+        show_result(winner)
+        return
 
     keys = arena.current_keys()
     if "up" in keys and y_view > 0:
@@ -21,11 +38,11 @@ def tick():
         x_view = min(BG_WIDTH - w_view, x_view + 5)
 
     for a in arena.actors():
+        ax, ay = a.pos()
         if isinstance(a, Arthur):
-            ax, ay = a.pos()
 
             # Spawn a zombie only if arthur is alive
-            if randint(0, 500) == 5:
+            if randint(0, 50) == 2:
                 direction = randint(0, 10) % 2
                 diff = randint(50, 200)
                 zx = ax + diff * (1 if direction == 0 else -1)
@@ -45,12 +62,13 @@ def tick():
             elif ax - x_view > w_view - margin:
                 x_view = min(BG_WIDTH - w_view, ax - (w_view - margin))
         else:
-            g2d.draw_image(
-                "./imgs/sprites.png",
-                a.pos(),
-                a.sprite(),
-                a.size(),
-            )
+            if a.sprite() != None:
+                g2d.draw_image(
+                    "./imgs/sprites.png",
+                    (ax - x_view, ay - y_view),
+                    a.sprite(),
+                    a.size(),
+                )
 
     arena.tick(g2d.current_keys())
 
@@ -62,6 +80,13 @@ def main():
     import g2d
     arena = Arena((w_view, h_view), (BG_WIDTH, BG_HEIGHT))
     arena.spawn(Arthur((0, 170)))
+
+    arena.spawn(Gravestone((50, 185), (15, 15)))
+    arena.spawn(Gravestone((242, 185), (15, 15)))
+    arena.spawn(Gravestone((530, 185), (15, 15)))
+    arena.spawn(Gravestone((754, 185), (15, 15)))
+    arena.spawn(Gravestone((962, 185), (15, 15)))
+    arena.spawn(Gravestone((1106, 185), (15, 15)))
 
     g2d.init_canvas(arena.view_size(), 2)
     g2d.main_loop(tick)
