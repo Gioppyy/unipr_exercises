@@ -131,8 +131,10 @@ def load_audio(src: str) -> str:
             _loaded[src] = pg.mixer.Sound(audio)
     return src
 
-def play_audio(src: str, loop=False) -> None:
-    _loaded[load_audio(src)].play(-1 if loop else 0)
+def play_audio(src: str, loop=False, volume=0.05) -> None:
+    sound = _loaded[load_audio(src)]
+    sound.set_volume(volume)
+    sound.play(-1 if loop else 0)
 
 def pause_audio(src: str) -> None:
     _loaded[load_audio(src)].stop()

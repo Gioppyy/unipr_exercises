@@ -38,7 +38,7 @@ class Arthur(Actor):
         if self._torch_cooldown > 0:
             self._torch_cooldown -= 1
 
-        if self._animation_tick > 0: # salto?
+        if self._animation_tick > 0: # arthur sta saltando
             self._animation_tick -= 1
             if self._animation_tick == 0:
                 self._animation = False
@@ -92,7 +92,7 @@ class Arthur(Actor):
 
         for obj in arena.collisions():
             if isinstance(obj, Zombie):
-                arena.decrease_lives()
+                #arena.decrease_lives()
                 arena.kill(obj)
                 if arena.get_lives() == 0:
                     arena.kill(self)

@@ -5,6 +5,7 @@ from actors.gravestone import Gravestone
 from random import randint
 
 BG_WIDTH, BG_HEIGHT = 3588, 250
+playing = "start"
 
 def show_result(winner):
     global written
@@ -16,7 +17,7 @@ def show_result(winner):
 
 
 def tick():
-    global x_view, y_view
+    global x_view, y_view, playing
 
     g2d.clear_canvas()
     g2d.set_color((0,0,0))
@@ -40,6 +41,11 @@ def tick():
     for a in arena.actors():
         ax, ay = a.pos()
         if isinstance(a, Arthur):
+
+            if ax >= 1794 and playing == "start":
+                playing = "end"
+                g2d.pause_audio("./audio/start.mp3")
+                g2d.play_audio("./audio/end.mp3")
 
             # Spawn a zombie only if arthur is alive
             if randint(0, 50) == 2:
@@ -89,6 +95,7 @@ def main():
     arena.spawn(Gravestone((1106, 185), (15, 15)))
 
     g2d.init_canvas(arena.view_size(), 2)
+    g2d.play_audio("./audio/start.mp3")
     g2d.main_loop(tick)
 
 if __name__ == "__main__":
