@@ -1,4 +1,4 @@
-from actor import Actor, Arena, Point
+from libs.actor import Actor, Arena, Point
 from actors.flame import Flame
 from actors.zombie import Zombie
 

@@ -1,4 +1,4 @@
-from actor import Arena
+from libs.actor import Arena
 from actors.arthur import Arthur
 from actors.zombie import Zombie
 from actors.gravestone import Gravestone
@@ -15,7 +15,6 @@ def show_result(winner):
     else:
         g2d.draw_image("./imgs/win.png", (0, 0))
 
-
 def tick():
     global x_view, y_view, playing
 
@@ -29,10 +28,6 @@ def tick():
         return
 
     keys = arena.current_keys()
-    if "up" in keys and y_view > 0:
-        y_view = max(0, y_view - 5)
-    elif "down" in keys and y_view < BG_HEIGHT - h_view:
-        y_view = min(BG_HEIGHT - h_view, y_view + 5)
     if "left" in keys and x_view > 0:
         x_view = max(0, x_view - 5)
     elif "right" in keys and x_view < BG_WIDTH - w_view:
@@ -42,13 +37,12 @@ def tick():
         ax, ay = a.pos()
         if isinstance(a, Arthur):
 
-            if ax >= 1794 and playing == "start":
-                playing = "end"
-                g2d.pause_audio("./audio/start.mp3")
-                g2d.play_audio("./audio/end.mp3")
+            if ax >= 1794 and ("start" in arena.get_song_src()):
+                arena.set_song("./audio/end.mp3")
+                arena.start_song()
 
             # Spawn a zombie only if arthur is alive
-            if randint(0, 50) == 2:
+            if randint(0, 500) == 250:
                 direction = randint(0, 10) % 2
                 diff = randint(50, 200)
                 zx = ax + diff * (1 if direction == 0 else -1)
@@ -83,19 +77,17 @@ w_view, h_view = 400, 220
 
 def main():
     global g2d, arena
-    import g2d
+    import libs.g2d as g2d
     arena = Arena((w_view, h_view), (BG_WIDTH, BG_HEIGHT))
-    arena.spawn(Arthur((0, 170)))
 
-    arena.spawn(Gravestone((50, 185), (15, 15)))
-    arena.spawn(Gravestone((242, 185), (15, 15)))
-    arena.spawn(Gravestone((530, 185), (15, 15)))
-    arena.spawn(Gravestone((754, 185), (15, 15)))
-    arena.spawn(Gravestone((962, 185), (15, 15)))
-    arena.spawn(Gravestone((1106, 185), (15, 15)))
+    arena.spawn(Arthur((0, 170)))
+    for x in [50, 242, 530, 754, 962, 1106]: # posizioni delle tombe
+        arena.spawn(Gravestone((x, 185)))
 
     g2d.init_canvas(arena.view_size(), 2)
-    g2d.play_audio("./audio/start.mp3")
+    arena.set_song("./audio/start.mp3")
+    arena.start_song()
+
     g2d.main_loop(tick)
 
 if __name__ == "__main__":

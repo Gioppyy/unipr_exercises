@@ -1,4 +1,4 @@
-from actor import Actor, Point
+from libs.actor import Actor, Point
 
 class Platform(Actor):
     def __init__(self, pos: Point, size: Point):

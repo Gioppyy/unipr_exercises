@@ -1,9 +1,8 @@
-from actor import Actor, Arena, Point
+from libs.actor import Actor, Arena, Point
 
 class Gravestone(Actor):
-    def __init__(self, pos: Point, size: Point):
+    def __init__(self, pos: Point):
         self._x, self._y = pos
-        self._w, self._h = size
 
     def move(self, arena):
         pass
@@ -12,7 +11,7 @@ class Gravestone(Actor):
         return (self._x, self._y)
 
     def size(self) -> Point:
-        return (self._w, self._h)
+        return (15, 15)
 
     def sprite(self) -> Point | None:
         return None

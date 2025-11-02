@@ -4,6 +4,8 @@
 @license This software is free - http://www.gnu.org/licenses/gpl.html
 """
 
+import libs.g2d as g2d
+
 Point = tuple[float, float]
 
 class Actor:
@@ -60,6 +62,7 @@ class Arena():
         self._level = 0
         self._lives = 3
         self._status = (True, "")
+        self._current_song_src = None
 
     def spawn(self, a: Actor):
         """Register an actor into this arena.
@@ -97,6 +100,20 @@ class Arena():
 
     def get_lives(self):
         return self._lives
+
+    def get_song(self):
+        return self._current_song
+
+    def get_song_src(self) -> str | None:
+        return self._current_song_src
+
+    def set_song(self, song_src: str):
+        if self._current_song_src != None:
+            g2d.pause_audio(self._current_song_src)
+        self._current_song_src = song_src
+
+    def start_song(self):
+        g2d.play_audio(self._current_song_src)
 
     def spawn_mobs(self, type):
         self.kill_all(type)

@@ -1,4 +1,4 @@
-from actor import Actor, Arena, Point
+from libs.actor import Actor, Arena, Point
 from actors.zombie import Zombie
 from actors.torch import Torch
 from actors.gravestone import Gravestone
@@ -92,7 +92,7 @@ class Arthur(Actor):
 
         for obj in arena.collisions():
             if isinstance(obj, Zombie):
-                #arena.decrease_lives()
+                arena.decrease_lives()
                 arena.kill(obj)
                 if arena.get_lives() == 0:
                     arena.kill(self)
