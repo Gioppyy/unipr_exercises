@@ -2,6 +2,7 @@ from libs.actor import Arena
 from actors.arthur import Arthur
 from actors.zombie import Zombie
 from actors.gravestone import Gravestone
+from actors.plant import Plant
 from random import randint
 
 BG_WIDTH, BG_HEIGHT = 3588, 250
@@ -83,6 +84,9 @@ def main():
     arena.spawn(Arthur((0, 170)))
     for x in [50, 242, 530, 754, 962, 1106]: # posizioni delle tombe
         arena.spawn(Gravestone((x, 185)))
+
+    for x,y in [(1108, 98)]:
+        arena.spawn(Plant((x, y)))
 
     g2d.init_canvas(arena.view_size(), 2)
     arena.set_song("./audio/start.mp3")

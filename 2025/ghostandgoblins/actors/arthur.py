@@ -2,6 +2,7 @@ from libs.actor import Actor, Arena, Point
 from actors.zombie import Zombie
 from actors.torch import Torch
 from actors.gravestone import Gravestone
+from actors.plant import Eyeball
 
 # ( (sprite_coord), (sprite_size) )
 DEFAULT = ((6, 43), (20, 31))
@@ -91,7 +92,7 @@ class Arthur(Actor):
                 )
 
         for obj in arena.collisions():
-            if isinstance(obj, Zombie):
+            if isinstance(obj, Zombie) or isinstance(obj, Eyeball):
                 arena.decrease_lives()
                 arena.kill(obj)
                 if arena.get_lives() == 0:
@@ -119,6 +120,9 @@ class Arthur(Actor):
             self._walk_tick = 0
             self._walk_frame = (self._walk_frame + 1) % len(frames)
         self._sprite, self._size = frames[self._walk_frame]
+
+    def facing(self) -> str:
+        return self._facing
 
     def pos(self) -> Point:
         return (self._x, self._y)

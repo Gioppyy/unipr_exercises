@@ -131,6 +131,12 @@ class Arena():
                 count += 1
         return count
 
+    def get_by_type(self, type):
+        for a in self._actors:
+            if isinstance(a, type):
+                return a
+        return None
+
     def set_score(self, score: int):
         self._score = score
 
